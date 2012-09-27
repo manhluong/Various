@@ -60,7 +60,7 @@ Please read my blog posts at [LINK] to know more about this app.\n
 Initial release.</string>
     <string name="about_github_btn">GitHub</string>
     <string name="about_blog_btn">Blog</string>
-    <string name="github_url">http://www.google.com</string>
+    <string name="github_url">https://github.com/manhluong/Various/tree/master/FlockLab</string>
     <string name="blog_url">http://malubu.wordpress.com/tag/flocklab/</string>
     <string name="menu_settings_fps">FPS</string>
 
