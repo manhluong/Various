@@ -20,10 +20,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.appwidget.AppWidgetHost;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -146,7 +144,7 @@ public class MaLuBuTestWidgetProvider extends AppWidgetProvider
    
    public static void addUri(int id, Uri uri)
       {
-      uris.put(new Integer(id), uri);
+      uris.put(Integer.valueOf(id), uri);
       }
    
    private void updateAppWidget(Context context,
