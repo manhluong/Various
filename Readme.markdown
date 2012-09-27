@@ -11,7 +11,7 @@ The code is part of four posts tutorial that you can find in my blog.
 
 Test and education application for Android OS.
 
-Upcoming blgo posts, Google Play link and Youtube video.
+Upcoming blog posts, Google Play link and Youtube video.
 
 # License
 
