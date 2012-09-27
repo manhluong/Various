@@ -1,0 +1,207 @@
+<!--
+  ~ Copyright 2012 Manh Luong   Bui
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <app.luong.android.flocklab.FlockView
+        android:id="@+id/animation_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        tools:context=".FlockLab" />
+    
+    <RelativeLayout
+        android:id="@+id/settings_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+        
+            <RelativeLayout
+               android:id="@+id/settings_view_btn"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:layout_alignParentTop="true">
+               <Button
+                   android:id="@+id/reset_settings_btn"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_toLeftOf="@+id/cancel_settings_btn"
+                   android:textColor="@android:color/black"
+                   android:text="@string/reset_settings_button"
+                   android:onClick="onSettingsReset"
+                   android:visibility="invisible"/>
+               <Button
+                   android:id="@+id/cancel_settings_btn"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_toLeftOf="@+id/done_settings_btn"
+                   android:textColor="@android:color/black"
+                   android:text="@string/cancel_settings_button"
+                   android:onClick="onSettingsHide"
+                   android:visibility="invisible"/>
+               <Button
+                   android:id="@+id/done_settings_btn"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_alignParentRight="true"
+                   android:textColor="@android:color/black"
+                   android:text="@string/done_settings_button"
+                   android:onClick="onSettingsDone"
+                   android:visibility="invisible"/>
+            </RelativeLayout>
+            
+            <LinearLayout
+               android:id="@+id/settings_view_weights"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               android:layout_below="@+id/settings_view_btn">
+               <TextView
+                  android:id="@+id/title_sep_weight"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:text="@string/seek_sep_title_weight"
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:visibility="invisible"/>
+               <SeekBar
+                  android:id="@+id/seek_sep_weight"
+                  android:max="99"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:visibility="invisible"/>
+               <TextView
+                  android:id="@+id/title_align_weight"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:text="@string/seek_align_title_weight"
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:visibility="invisible"/>
+               <SeekBar
+                  android:id="@+id/seek_align_weight"
+                  android:max="99"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:visibility="invisible"/>
+               <TextView
+                  android:id="@+id/title_coh_weight"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:text="@string/seek_coh_title_weight"
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:visibility="invisible"/>
+               <SeekBar
+                  android:id="@+id/seek_coh_weight"
+                  android:max="99"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:visibility="invisible"/>
+            </LinearLayout>
+            
+            <LinearLayout
+               android:id="@+id/settings_view_ranges"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               android:layout_below="@+id/settings_view_btn">
+               <TextView
+                  android:id="@+id/title_sep_range"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:text="@string/seek_sep_title_range"
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:visibility="invisible"/>
+               <SeekBar
+                  android:id="@+id/seek_sep_range"
+                  android:max="99"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:visibility="invisible"/>
+               <TextView
+                  android:id="@+id/title_align_range"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:text="@string/seek_align_title_range"
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:visibility="invisible"/>
+               <SeekBar
+                  android:id="@+id/seek_align_range"
+                  android:max="99"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:visibility="invisible"/>
+               <TextView
+                  android:id="@+id/title_coh_range"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:text="@string/seek_coh_title_range"
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:visibility="invisible"/>
+               <SeekBar
+                  android:id="@+id/seek_coh_range"
+                  android:max="99"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:visibility="invisible"/>
+            </LinearLayout>
+            
+            <LinearLayout
+               android:id="@+id/settings_view_radiuses"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               android:layout_below="@+id/settings_view_btn">
+               <TextView
+                  android:id="@+id/title_seek_radius"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:text="@string/seek_seek_title_radius"
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:visibility="invisible"/>
+               <SeekBar
+                  android:id="@+id/seek_seek_radius"
+                  android:max="199"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:visibility="invisible"/>
+               <TextView
+                  android:id="@+id/title_evade_radius"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:text="@string/seek_evade_title_radius"
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:visibility="invisible"/>
+               <SeekBar
+                  android:id="@+id/seek_evade_radius"
+                  android:max="199"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:visibility="invisible"/>
+            </LinearLayout>
+            
+    </RelativeLayout>
+
+</RelativeLayout>

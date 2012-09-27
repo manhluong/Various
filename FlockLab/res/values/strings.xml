@@ -1,0 +1,67 @@
+<!--
+  ~ Copyright 2012 Manh Luong   Bui
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+
+<resources>
+
+    <string name="app_name">Flock Lab</string>
+    <string name="title_activity_flock_lab">Flock Lab</string>
+    <string name="seek_sep_title_weight">Separation weight:</string>
+    <string name="seek_align_title_weight">Alignment weight:</string>
+    <string name="seek_coh_title_weight">Cohesion weight:</string>
+    <string name="done_settings_button">Set</string>
+    <string name="reset_settings_button">Reset</string>
+    <string name="menu_settings_weight">Weights</string>
+    <string name="menu_settings_hide">Hide</string>
+    <string name="cancel_settings_button">Cancel</string>
+    <string name="menu_settings_range">Ranges</string>
+    <string name="seek_sep_title_range">Separation range:</string>
+    <string name="seek_align_title_range">Alignment range:</string>
+    <string name="seek_coh_title_range">Cohesion range:</string>
+    <string name="menu_settings_radius">Radiuses</string>
+    <string name="seek_seek_title_radius">Seek radius:</string>
+    <string name="seek_evade_title_radius">Evade radius:</string>
+    <string name="apache_license">Copyright 2012 Manh Luong   Bui\n
+\n
+Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.\n
+You may obtain a copy of the License at\n
+\n
+http://www.apache.org/licenses/LICENSE-2.0\n
+\n
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</string>
+    <string name="menu_settings_about">About</string>
+    <string name="about_description">I made this application as a test and educational one.\n
+\n
+Craig W. Reynolds created the original algorithm.\n
+\n
+Large part of the boid\'s code is a porting of the work of Daniel Shiffman in Processing.\n
+\n
+Please read my blog posts at [LINK] to know more about this app.\n
+\n
+   Luong</string>
+    <string name="about_versioning">1.0.0, 25 Sept. 2012:\n
+Initial release.</string>
+    <string name="about_github_btn">GitHub</string>
+    <string name="about_blog_btn">Blog</string>
+    <string name="github_url">http://www.google.com</string>
+    <string name="blog_url">http://malubu.wordpress.com/tag/flocklab/</string>
+    <string name="menu_settings_fps">FPS</string>
+
+</resources>
