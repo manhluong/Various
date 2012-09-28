@@ -56,7 +56,11 @@ Large part of the boid\'s code is a porting of the work of Daniel Shiffman in Pr
 Please read my blog posts at http://malubu.wordpress.com/ to know more about this app.\n
 \n
    Luong</string>
-    <string name="about_versioning">1.0.1, 28 Sept. 2012:\n
+    <string name="about_versioning">1.0.2, 28 Sept. 2012:1\n
+        Solved crash when Cancel is pressed.\n
+        Custom number of boids.\n
+        Number of boids saved.\n
+1.0.1, 28 Sept. 2012:\n
 Bug fixes.\n1.0.0, 25 Sept. 2012:\n
 Initial release.</string>
     <string name="about_github_btn">GitHub</string>
@@ -64,5 +68,7 @@ Initial release.</string>
     <string name="github_url">https://github.com/manhluong/Various/tree/master/FlockLab</string>
     <string name="blog_url">http://malubu.wordpress.com/tag/flocklab/</string>
     <string name="menu_settings_fps">FPS</string>
+    <string name="menu_settings_boid_num"># Boids</string>
+    <string name="seek_title_boid_num">Number of boids:</string>
 
 </resources>

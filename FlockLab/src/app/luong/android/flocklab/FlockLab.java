@@ -33,6 +33,7 @@ import android.widget.TextView;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 import app.luong.android.flocklab.engine.Flock;
 
@@ -59,7 +60,11 @@ public class FlockLab extends Activity
    
    private static final String EVADE_KEY_RANGE = "FlockLab.Evade.Range";
    
+   private static final String BOID_NUM_KEY = "FlockLab.Boid.Num";
+   
    private static final String HIDE_KEY = "FlockLab.HideSettings";
+   
+   private static final String PREFS = "FlockLabPrefs";
    
    private static FlockView _flockView;
    
@@ -79,6 +84,8 @@ public class FlockLab extends Activity
    
    private static SeekBar _seekEvadeRadius;
    
+   private static SeekBar _seekBoidNum;
+   
    /**
     * Used in onSettingsHide() to determine if Views are shown or not.<br>
     * onSettingsHide() change this value accordingly to show/hide at <b>next</b> call.<br>
@@ -91,7 +98,8 @@ public class FlockLab extends Activity
       {
       WEIGHTS,
       RANGES,
-      RADIUSES
+      RADIUSES,
+      BOIDSNUM
       };
       
    /**
@@ -383,10 +391,53 @@ public class FlockLab extends Activity
          });
       //END RADIUSES ************************************************************
       
+      //BOID NUMBER
+      SharedPreferences settings = getSharedPreferences(PREFS, 0);
+      int oldBoidNum = settings.getInt(BOID_NUM_KEY, -1);
+      if(oldBoidNum<0)
+         oldBoidNum = (int)(Flock.DEF_BOID_NUM)-Flock.FLOCK_SIZE_MIN;
+      _seekBoidNum = (SeekBar)findViewById(R.id.seek_boid_num);
+      ((TextView)findViewById(R.id.title_boid_num))
+         .setText(getText(R.string.seek_title_boid_num) + " " + (int)(oldBoidNum+Flock.FLOCK_SIZE_MIN));
+      _seekBoidNum.setProgress(oldBoidNum);
+      _seekBoidNum.setSecondaryProgress(_seekBoidNum.getProgress());
+      _seekBoidNum.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
+         {
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar)
+               {}
+            
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar)
+               {}
+            
+            @Override
+            public void onProgressChanged(SeekBar seekBar,
+                                          int progress,
+                                          boolean fromUser)
+               {
+               ((TextView)findViewById(R.id.title_boid_num))
+                  .setText(getText(R.string.seek_title_boid_num) +
+                        " " + (progress+Flock.FLOCK_SIZE_MIN));
+               }
+         });
+      //END BOID NUMBER
+      
       //Start with settings hided.
       _hideSettings = true;
       //Start with weights. Anyway it is setted in onOptionsItemSelected.
       _showWhichSettings = SettingsState.WEIGHTS;
+      
+      //Call it once, to set saved preferences.
+      _flockView.setNewFlockSettings((_seekSepWeight.getProgress()+1)/Flock.PROGRESS_FACTOR,
+                                     (_seekAlignWeight.getProgress()+1)/Flock.PROGRESS_FACTOR,
+                                     (_seekCohWeight.getProgress()+1)/Flock.PROGRESS_FACTOR,
+                                     _seekSepRange.getProgress()+1,
+                                     _seekAlignRange.getProgress()+1,
+                                     _seekCohRange.getProgress()+1,
+                                     _seekSeekRadius.getProgress()+1,
+                                     _seekEvadeRadius.getProgress()+1,
+                                     _seekBoidNum.getProgress()+Flock.FLOCK_SIZE_MIN);
       }
    
    @Override
@@ -434,7 +485,8 @@ public class FlockLab extends Activity
                                _seekAlignRange.getProgress()+1,
                                _seekCohRange.getProgress()+1,
                                _seekSeekRadius.getProgress()+1,
-                               _seekEvadeRadius.getProgress()+1);
+                               _seekEvadeRadius.getProgress()+1,
+                               _seekBoidNum.getProgress()+Flock.FLOCK_SIZE_MIN);
       //Thread launched in SurfaceView.surfaceCreated().
       }
    
@@ -442,7 +494,24 @@ public class FlockLab extends Activity
    protected void onPause()
       {
       super.onPause();
+      writePreferences();
       //SurfaceView.surfaceDestroyed() is called, destroying the thread.
+      }
+   
+   @Override
+   protected void onStop()
+      {
+      super.onStop();
+      //Do it one last time.
+      writePreferences();
+      }
+   
+   public void writePreferences()
+      {
+      SharedPreferences settings = getSharedPreferences(PREFS, 0);
+      SharedPreferences.Editor editor = settings.edit();
+      editor.putInt(BOID_NUM_KEY, _seekBoidNum.getProgress());
+      editor.commit();
       }
    
    @Override
@@ -457,6 +526,7 @@ public class FlockLab extends Activity
       outBundle.putInt(COH_KEY_RANGE, _seekCohRange.getProgress());
       outBundle.putInt(SEEK_KEY_RANGE, _seekSeekRadius.getProgress());
       outBundle.putInt(EVADE_KEY_RANGE, _seekEvadeRadius.getProgress());
+      outBundle.putInt(BOID_NUM_KEY, _seekBoidNum.getProgress());
       outBundle.putBoolean(HIDE_KEY, _hideSettings);
       }
    
@@ -473,6 +543,7 @@ public class FlockLab extends Activity
                     inBundle.getInt(COH_KEY_RANGE));
       setRadiusSeeks(inBundle.getInt(SEEK_KEY_RANGE),
                      inBundle.getInt(EVADE_KEY_RANGE));
+      setBoidNumSeek(inBundle.getInt(BOID_NUM_KEY));
       setSecondaryWeightSeeks(_seekSepWeight.getProgress(),
                               _seekAlignWeight.getProgress(),
                               _seekCohWeight.getProgress());
@@ -481,6 +552,7 @@ public class FlockLab extends Activity
                              _seekCohRange.getProgress());
       setSecondaryRadiusSeeks(_seekSeekRadius.getProgress(),
                               _seekEvadeRadius.getProgress());
+      setSecondaryBoidNumSeek(_seekBoidNum.getProgress());
       //Since last time onSettingsHide() was called _hideSettings was updated, now we need the opposite.
       _hideSettings = !inBundle.getBoolean(HIDE_KEY);
       onSettingsHide(null);
@@ -519,6 +591,13 @@ public class FlockLab extends Activity
             _hideSettings = true;
             onSettingsHide(null);//Then show what is supposed to be shown.
             return true;
+         case R.id.menu_settings_boid_num:
+            _hideSettings = false;
+            onSettingsHide(null);//First, hide what is shown on screen.
+            _showWhichSettings = SettingsState.BOIDSNUM;
+            _hideSettings = true;
+            onSettingsHide(null);//Then show what is supposed to be shown.
+            return true;
          case R.id.menu_settings_fps:
             _flockView.showFpsCount();
             return true;
@@ -544,6 +623,8 @@ public class FlockLab extends Activity
       else if(_showWhichSettings == SettingsState.RADIUSES)
          setRadiusSeeks((int)Flock.DEF_SEEK_RADIUS-1,
                         (int)Flock.DEF_EVADE_RADIUS-1);
+      else if(_showWhichSettings == SettingsState.BOIDSNUM)
+         setBoidNumSeek(Flock.DEF_BOID_NUM-Flock.FLOCK_SIZE_MIN);
       }
    
    public void onSettingsDone(View src)
@@ -559,6 +640,8 @@ public class FlockLab extends Activity
       else if(_showWhichSettings == SettingsState.RADIUSES)
          setSecondaryRadiusSeeks(_seekSeekRadius.getProgress(),
                                  _seekEvadeRadius.getProgress());
+      else if(_showWhichSettings == SettingsState.BOIDSNUM)
+         setSecondaryBoidNumSeek(_seekBoidNum.getProgress());
       _flockView.setNewFlockSettings((_seekSepWeight.getProgress()+1)/Flock.PROGRESS_FACTOR,
                                      (_seekAlignWeight.getProgress()+1)/Flock.PROGRESS_FACTOR,
                                      (_seekCohWeight.getProgress()+1)/Flock.PROGRESS_FACTOR,
@@ -566,7 +649,8 @@ public class FlockLab extends Activity
                                      _seekAlignRange.getProgress()+1,
                                      _seekCohRange.getProgress()+1,
                                      _seekSeekRadius.getProgress()+1,
-                                     _seekEvadeRadius.getProgress()+1);
+                                     _seekEvadeRadius.getProgress()+1,
+                                     _seekBoidNum.getProgress()+Flock.FLOCK_SIZE_MIN);
       onSettingsHide(_flockView);
       }
    
@@ -574,7 +658,7 @@ public class FlockLab extends Activity
     * Show or hide all settings Views without any visibility checking.
     * @param src
     */
-   void onSettingsHide(View src)
+   public void onSettingsHide(View src)
       {
       //Hide / show the Layout is not reliable.
       if(!_hideSettings)
@@ -611,6 +695,12 @@ public class FlockLab extends Activity
             findViewById(R.id.seek_evade_radius).setVisibility(View.INVISIBLE);
             setRadiusSeeks(_seekSeekRadius.getSecondaryProgress(),
                            _seekEvadeRadius.getSecondaryProgress());
+            }
+         else if(_showWhichSettings == SettingsState.BOIDSNUM)
+            {
+            findViewById(R.id.title_boid_num).setVisibility(View.INVISIBLE);
+            findViewById(R.id.seek_boid_num).setVisibility(View.INVISIBLE);
+            setBoidNumSeek(_seekBoidNum.getSecondaryProgress());
             }
          //BUTTONS
          findViewById(R.id.reset_settings_btn).setVisibility(View.INVISIBLE);
@@ -654,6 +744,12 @@ public class FlockLab extends Activity
             setSecondaryRadiusSeeks(_seekSeekRadius.getProgress(),
                                     _seekEvadeRadius.getProgress());
             }
+         else if(_showWhichSettings == SettingsState.BOIDSNUM)
+            {
+            findViewById(R.id.title_boid_num).setVisibility(View.VISIBLE);
+            findViewById(R.id.seek_boid_num).setVisibility(View.VISIBLE);
+            setSecondaryBoidNumSeek(_seekBoidNum.getProgress());
+            }
          //BUTTONS
          findViewById(R.id.reset_settings_btn).setVisibility(View.VISIBLE);
          findViewById(R.id.cancel_settings_btn).setVisibility(View.VISIBLE);
@@ -688,6 +784,11 @@ public class FlockLab extends Activity
       _seekEvadeRadius.setProgress(evade);
       }
    
+   private void setBoidNumSeek(int boids)
+      {
+      _seekBoidNum.setProgress(boids);
+      }
+   
    private void setSecondaryWeightSeeks(int sep, int align, int coh)
       {
       _seekSepWeight.setSecondaryProgress(sep);
@@ -706,5 +807,10 @@ public class FlockLab extends Activity
       {
       _seekSeekRadius.setSecondaryProgress(seek);
       _seekEvadeRadius.setSecondaryProgress(evade);
+      }
+   
+   private void setSecondaryBoidNumSeek(int boids)
+      {
+      _seekBoidNum.setSecondaryProgress(boids);
       }
    }

@@ -202,6 +202,28 @@
                   android:visibility="invisible"/>
             </LinearLayout>
             
+            <LinearLayout
+               android:id="@+id/settings_view_boid_num"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:orientation="vertical"
+               android:layout_below="@+id/settings_view_btn">
+               <TextView
+                  android:id="@+id/title_boid_num"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:text="@string/seek_title_boid_num"
+                  android:textColor="@android:color/black"
+                  android:textSize="18sp"
+                  android:visibility="invisible"/>
+               <SeekBar
+                  android:id="@+id/seek_boid_num"
+                  android:max="180"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:visibility="invisible"/>
+            </LinearLayout>
+            
     </RelativeLayout>
 
 </RelativeLayout>

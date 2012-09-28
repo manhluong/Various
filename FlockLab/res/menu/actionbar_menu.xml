@@ -27,9 +27,13 @@
         android:title="@string/menu_settings_radius"
         android:orderInCategory="102"
         android:showAsAction="never"/>
+    <item android:id="@+id/menu_settings_boid_num"
+        android:title="@string/menu_settings_boid_num"
+        android:orderInCategory="103"
+        android:showAsAction="never"/>
     <item android:id="@+id/menu_settings_fps"
         android:title="@string/menu_settings_fps"
-        android:orderInCategory="103"
+        android:orderInCategory="109"
         android:showAsAction="never"/>
     <item android:id="@+id/menu_settings_about"
         android:title="@string/menu_settings_about"

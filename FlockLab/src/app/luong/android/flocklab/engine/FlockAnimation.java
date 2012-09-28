@@ -100,6 +100,7 @@ public class FlockAnimation extends Thread
                  _sepRangeBuf, _alignRangeBuf, _cohRangeBuf,
                  _evadeRadiusBuf, _seekRadiusBuf,
                  _areaWidth, _areaHeight, _areaX, _areaY;
+   private int _boidNumBuf;
 
    public FlockAnimation(SurfaceHolder surfaceHolder)
       {
@@ -119,6 +120,8 @@ public class FlockAnimation extends Thread
       //For text style, do it only once, here.
       _paint.setTextSize(33);
       _paint.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+      //Start with default flock size.
+      _boidNumBuf = Flock.DEF_BOID_NUM;
       }
    
    /**
@@ -128,7 +131,7 @@ public class FlockAnimation extends Thread
    public void initFlock(int size)
       {
       Canvas c = _surfHolder.lockCanvas(null);
-      flock = new Flock(0, 0, c.getWidth(), c.getHeight(), size);
+      flock = new Flock(0, 0, c.getWidth(), c.getHeight(), size, _boidNumBuf);
       _areaWidth = c.getWidth();
       _areaHeight = c.getHeight();
       _areaX = 0;
@@ -206,7 +209,8 @@ public class FlockAnimation extends Thread
                            _sepFactBuf, _alignFactBuf, _cohFactBuf,
                            _sepRangeBuf, _alignRangeBuf, _cohRangeBuf,
                            _targetBuf, _targetTypeBuf,
-                           _seekRadiusBuf, _evadeRadiusBuf);
+                           _seekRadiusBuf, _evadeRadiusBuf,
+                           _boidNumBuf);
          //Updated, next cycle do it normal.
          resetNewSettings();
          }
@@ -285,7 +289,8 @@ public class FlockAnimation extends Thread
     */
    public synchronized void setNewSettings(float sepFact, float alignFact, float cohFact,
                                            float sepRange, float alignRange, float cohRange,
-                                           float seekRadius, float evadeRadius)
+                                           float seekRadius, float evadeRadius,
+                                           int boidNumBuf)
       {
       if(_newSettings)
          return;
@@ -297,6 +302,7 @@ public class FlockAnimation extends Thread
       _cohRangeBuf = cohRange;
       _seekRadiusBuf = seekRadius;
       _evadeRadiusBuf = evadeRadius;
+      _boidNumBuf = boidNumBuf;
       trimTargetPosition();
       _newSettings = true;
       }

@@ -16,11 +16,8 @@
 
 package app.luong.android.flocklab.engine;
 
-import app.luong.android.flocklab.*;
-
 public class Boid
    {
-   public static final int MAX_GROUP_NUMBER = FlockView.FLOCK_SIZE/10;
 
    /**
     * Position of the boid.
@@ -144,13 +141,14 @@ public class Boid
     * Update this boid related to all the other boids.
     */
    public void updateBoid(Boid boids[],
+                          int boidsLength,
                           FlockCalcBuffers buffers,
                           int elapsedTime,
                           Vector2D target,
                           int targetType)
       {
       //Calculate acceleration vector.
-      flock(boids, buffers);
+      flock(boids, boidsLength, buffers);
       //Apply acceleration vector.
       updatePosition(elapsedTime);
       //Apply target influence.
@@ -209,18 +207,19 @@ public class Boid
     * separation, alignment and cohesion.
     */
    public void flock(Boid boids[],
+                     int boidsLength,
                      FlockCalcBuffers buffers)
       {
       //Separation.
-      buffers._flockSumBuffer = separate(boids, buffers);//Final result stored in buffers._flockSumBuffer
+      buffers._flockSumBuffer = separate(boids, boidsLength, buffers);//Final result stored in buffers._flockSumBuffer
       buffers._flockSepBuffer._x = buffers._flockSumBuffer._x;
       buffers._flockSepBuffer._y = buffers._flockSumBuffer._y;
       //Alignment.
-      buffers._flockSumBuffer = alignment(boids, buffers._flockSumBuffer);
+      buffers._flockSumBuffer = alignment(boids, boidsLength, buffers._flockSumBuffer);
       buffers._flockAliBuffer._x = buffers._flockSumBuffer._x;
       buffers._flockAliBuffer._y = buffers._flockSumBuffer._y;
       //Cohesion.
-      buffers._flockSumBuffer = cohesion(boids, buffers);//Final result stored in buffers._flockSteerFleeBuffer
+      buffers._flockSumBuffer = cohesion(boids, boidsLength, buffers);//Final result stored in buffers._flockSteerFleeBuffer
       buffers._flockCohBuffer._x = buffers._flockSumBuffer._x;
       buffers._flockCohBuffer._y = buffers._flockSumBuffer._y;
       //Weight these forces.
@@ -304,13 +303,14 @@ public class Boid
     * Each boid must avoid collision with other boids.
     */
    public Vector2D separate (Boid boids[],
+                             int boidsLength,
                              FlockCalcBuffers buffers)
       {
       //Reset buffer.
       buffers._flockSumBuffer._x = 0;
       buffers._flockSumBuffer._y = 0;
       float count = 0;
-         for (int i = 0 ; i < boids.length; i++)
+         for (int i = 0 ; i < boidsLength; i++)
             {
             //float distance = Vector2D.distance2(_position, boids[i]._position);
             float distance = Vector2D.distance2Wrap(_position, boids[i]._position, _areaWidth, _areaHeight);
@@ -325,7 +325,7 @@ public class Boid
                buffers._flockSumBuffer.add(buffers._flockVectCalcBuffer);
                count++;
                }
-            if(count==MAX_GROUP_NUMBER)
+            if(count==Flock.MAX_GROUP_NUMBER)
                break;
             }
       //Average
@@ -345,13 +345,14 @@ public class Boid
     * It is the average speed of the nearby boids.
     */
    public Vector2D alignment(Boid boids[],
+                             int boidsLength,
                              Vector2D flockBuffer)
       {
       //Reset buffer.
       flockBuffer._x = 0;
       flockBuffer._y = 0;
       float count = 0;
-         for (int i = 0 ; i < boids.length; i++)
+         for (int i = 0 ; i < boidsLength; i++)
             {
             //float distance = Vector2D.distance2(_position, boids[i]._position);
             float distance = Vector2D.distance2Wrap(_position, boids[i]._position, _areaWidth, _areaHeight);
@@ -361,7 +362,7 @@ public class Boid
                flockBuffer.add(boids[i]._velocity);
                count++;
                }
-            if(count==MAX_GROUP_NUMBER)
+            if(count==Flock.MAX_GROUP_NUMBER)
                break;
             }
       if (count > 0)
@@ -382,13 +383,14 @@ public class Boid
     * Center = avarage of all locations.
     */
    public Vector2D cohesion (Boid boids[],
+                             int boidsLength,
                              FlockCalcBuffers buffers)
       {
       //Reset buffer.
       buffers._flockSumBuffer._x = 0;
       buffers._flockSumBuffer._y = 0;
       float count = 0;
-         for (int i = 0 ; i < boids.length; i++)
+         for (int i = 0 ; i < boidsLength; i++)
             {
             //float distance = Vector2D.distance2(_position, boids[i]._position);
             float distance = Vector2D.distance2Wrap(_position, boids[i]._position, _areaWidth, _areaHeight);
@@ -399,7 +401,7 @@ public class Boid
                buffers._flockSumBuffer.add(boids[i]._position);
                count++;
                }
-            if(count==MAX_GROUP_NUMBER)
+            if(count==Flock.MAX_GROUP_NUMBER)
                break;
             }
       if (count > 0)

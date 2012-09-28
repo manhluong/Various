@@ -44,6 +44,8 @@ public class Flock
    
    public static final float DEF_EVADE_RADIUS = 50.0f;
    
+   public static final int DEF_BOID_NUM = 150;
+   
    public static final int TARGET_RADIUS = 10;
    
    public static final int CHASE_TARGET = 0;
@@ -51,6 +53,16 @@ public class Flock
    public static final int EVADE_TARGET = 1;
    
    public static final int INVISIBLE_TARGET = 2;
+   
+   public static final int FLOCK_SIZE = 200;
+   
+   public static final int FLOCK_SIZE_MIN = 20;
+   
+   /**
+    * Number of boids each boid consider to calculate the three forces.<br>
+    * If SeekBar starts from 20 so is FLOCK_SIZE_MIN, FLOCK_SIZE is 200 then MAX_GROUP_NUMBER is 20.
+    */
+   public static final int MAX_GROUP_NUMBER = FLOCK_SIZE/(FLOCK_SIZE_MIN/2);
    
    /**
     * This mean that the factors has a resolution of 1/100, allowing 1000 values to be chosen.
@@ -97,6 +109,8 @@ public class Flock
    private float _widthBounds;
    
    private float _heightBounds;
+   
+   private int _actualSize;
 
    /**
     * @param areaX Origin of the area. 
@@ -104,7 +118,7 @@ public class Flock
     * @param width Width of the area in which this flock will fly.
     * @param height Height of the area in which this flock will fly.
     */
-   public Flock(float areaX, float areaY, float width, float height, int size)
+   public Flock(float areaX, float areaY, float width, float height, int maxSize, int actualSize)
       {
       _areaX = areaX;
       _areaY = areaY;
@@ -112,8 +126,8 @@ public class Flock
       _heightBounds = height;
       _randomGen = new Random();
       //Flock data.
-      _boids = new Boid[size];
-      //Populate with random values.
+      _boids = new Boid[maxSize];
+      //Populate with random values. Create all boids in memory.
       for(int i=0; i<_boids.length; i++)
          {
          _boids[i] = new Boid(_areaX,//Start x area.
@@ -131,6 +145,7 @@ public class Flock
          }
       _target = new Vector2D(0, 0);
       _targetType = INVISIBLE_TARGET;
+      _actualSize = actualSize;
       }
    
    /**
@@ -144,10 +159,11 @@ public class Flock
                            FlockCalcBuffers buffers,
                            int elapsedTime)
       {
-      for (int i = 0; i < _boids.length; i++)
+      for (int i = 0; i < _actualSize; i++)
          {
          //Update boid.
-         _boids[i].updateBoid(_boids,//All boids.
+         _boids[i].updateBoid(_boids,
+                              _actualSize,
                               buffers,//Used buffers.
                               elapsedTime,
                               _target,
@@ -183,7 +199,7 @@ public class Flock
                            float sf, float af, float cf,
                            float sr, float ar, float cr,
                            Vector2D target, int targetType,
-                           float ser, float er)
+                           float ser, float er, int as)
       {
       //Update target.
       _target._x = target._x;
@@ -191,14 +207,16 @@ public class Flock
       _targetType = targetType;
       _targetSeekRadius = ser;
       _targetEvadeRadius = er;
-      for (int i = 0; i < _boids.length; i++)
+      _actualSize = as;
+      for (int i = 0; i < _actualSize; i++)
          {
          //Update weights, ranges and radiuses.
          _boids[i].updateParameters(sf, af, cf,
                                     sr, ar, cr,
                                     ser, er);
          //Update boids.
-         _boids[i].updateBoid(_boids,//All boids.
+         _boids[i].updateBoid(_boids,
+                              _actualSize,
                               buffers,//Used buffers.
                               elapsedTime,
                               _target,

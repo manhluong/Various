@@ -16,8 +16,7 @@
 
 package app.luong.android.flocklab;
 
-import app.luong.android.flocklab.engine.FlockAnimation;
-
+import app.luong.android.flocklab.engine.*;
 import android.content.*;
 import android.util.*;
 import android.view.*;
@@ -26,7 +25,6 @@ import android.view.*;
 public class FlockView extends SurfaceView
                        implements SurfaceHolder.Callback 
    {
-   public static final int FLOCK_SIZE = 150;
    
    /**
     * Thread that refresh the canvas regularly.<br>
@@ -91,18 +89,19 @@ public class FlockView extends SurfaceView
     */
    public void initAnimation(float sepFact, float alignFact, float cohFact,
                              float sepRange, float alignRange, float cohRange,
-                             float evadeRadius, float seekRadius)
+                             float evadeRadius, float seekRadius,
+                             int boidNum)
       {
       initAnimation();
       _animation.setNewSettings(sepFact, alignFact, cohFact,
                                 sepRange, alignRange, cohRange,
-                                evadeRadius, seekRadius);
+                                evadeRadius, seekRadius, boidNum);
       }
    
    protected void startAnimation()
       {
       Log.d("FlockView", "Start animation.");
-      _animation.initFlock(FLOCK_SIZE);
+      _animation.initFlock(Flock.FLOCK_SIZE);
       _animation.setRunning(true);
       _animation.start();
       }
@@ -135,11 +134,13 @@ public class FlockView extends SurfaceView
    
    public void setNewFlockSettings(float sepFact, float alignFact, float cohFact,
                                    float sepRange, float alignRange, float cohRange,
-                                   float seekRadius, float evadeRadius)
+                                   float seekRadius, float evadeRadius,
+                                   int boidNum)
       {
       _animation.setNewSettings(sepFact, alignFact, cohFact,
                                 sepRange, alignRange, cohRange,
-                                seekRadius, evadeRadius);
+                                seekRadius, evadeRadius,
+                                boidNum);
       }
    
    /**

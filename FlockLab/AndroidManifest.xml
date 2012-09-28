@@ -16,13 +16,13 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"    
     package="app.luong.android.flocklab"
-    android:versionCode="2"
-    android:versionName="1.0.1" >
+    android:versionCode="3"
+    android:versionName="1.0.2" >
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="15" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+        android:targetSdkVersion="15" /><uses-permission android:name="android.permission.INTERNET"/>
+    
 
     <application
         android:icon="@drawable/ic_launcher"
