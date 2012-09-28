@@ -56,7 +56,8 @@ Large part of the boid\'s code is a porting of the work of Daniel Shiffman in Pr
 Please read my blog posts at http://malubu.wordpress.com/ to know more about this app.\n
 \n
    Luong</string>
-    <string name="about_versioning">1.0.0, 25 Sept. 2012:\n
+    <string name="about_versioning">1.0.1, 28 Sept. 2012:\n
+Bug fixes.\n1.0.0, 25 Sept. 2012:\n
 Initial release.</string>
     <string name="about_github_btn">GitHub</string>
     <string name="about_blog_btn">Blog</string>
