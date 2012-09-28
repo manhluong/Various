@@ -11,7 +11,9 @@ The code is part of four posts tutorial that you can find in my blog.
 
 Test and education application for Android OS.
 
-Upcoming blog posts, Google Play link and Youtube video.
+[Google Play](https://play.google.com/store/apps/details?id=app.luong.android.flocklab)
+
+Upcoming blog posts and Youtube video.
 
 # License
 
