@@ -267,6 +267,8 @@ public class FlockAnimation extends Thread
     */
    protected synchronized void resetNewSettings()
       {
+      if(!_newSettings)
+         return;
       _newSettings = false;
       }
    
@@ -285,6 +287,8 @@ public class FlockAnimation extends Thread
                                            float sepRange, float alignRange, float cohRange,
                                            float seekRadius, float evadeRadius)
       {
+      if(_newSettings)
+         return;
       _sepFactBuf = sepFact;
       _alignFactBuf = alignFact;
       _cohFactBuf = cohFact;
