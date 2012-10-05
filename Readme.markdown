@@ -13,7 +13,7 @@ Test and education application for Android OS.
 
 [Google Play](https://play.google.com/store/apps/details?id=app.luong.android.flocklab)
 
-[Youtube Playlit](http://www.youtube.com/playlist?list=PLGLO34tSPrOFpx5gT46t_joxdRqnjouk3)
+[Youtube](http://www.youtube.com/playlist?list=PLGLO34tSPrOFpx5gT46t_joxdRqnjouk3)
 
 [Blog posts](http://malubu.wordpress.com/tag/flocklab/)
 
